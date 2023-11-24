@@ -1,9 +1,9 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Audiobookshelf
-version: "1.2.0"
+version: "2.5.0-9"
 slug: audiobookshelf
 description: Running an audiobookshelf server
-url: "https://github.com/home-assistant/addons-example/tree/main/example"
+url: "https://github.com/matthewturk/hass-audiobookshelf/tree/main/audiobookshelf"
 arch:
   - armhf
   - armv7
@@ -12,9 +12,13 @@ arch:
   - i386
 init: false
 map:
-  - share:rw
-options:
-  message: "Hello world..."
-schema:
-  message: "str?"
-    #image: "ghcr.io/home-assistant/{arch}-addon-example"
+  - media:rw
+  - ssl:ro
+  - config:rw
+ports:
+  8081/tcp: 13379
+  443/tcp: 13378
+environment:
+  METADATA_PATH: /data/abs-metadata
+  CONFIG_PATH: /data/abs-config
+  PORT: "8081"

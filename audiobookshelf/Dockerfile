@@ -1,20 +1,23 @@
+ARG BUILD_FROM
 ## STAGE 0: Build Client ###
 
 FROM node:16-alpine AS build
 ADD https://github.com/advplyr/audiobookshelf/archive/refs/tags/v2.5.0.tar.gz /
-RUN tar xvf v2.5.0.tar.gz
-RUN ls -l / && cd /audiobookshelf-2.5.0/client/ && \
+RUN cd / && \
+    tar xvf v2.5.0.tar.gz && \
+    cd /audiobookshelf-2.5.0/client/ && \
     npm ci && npm cache clean --force \
-    npm run generate
+    npm install -g npm@10.2.4 && \
+    npm run generate && \
+    ls -l /audiobookshelf-2.5.0/client
 
 ## STAGE 1: Build Server ###
 
 FROM sandreas/tone:v0.1.5 AS tone
 
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
-#ARG BUILD_FROM
-#FROM $BUILD_FROM
-FROM ghcr.io/hassio-addons/base:14.3.2
+FROM $BUILD_FROM
+#FROM ghcr.io/hassio-addons/base:14.3.2
 
 # Execute during the build of the image
 ARG TEMPIO_VERSION BUILD_ARCH
@@ -30,7 +33,10 @@ RUN apk update && \
     make \
     python3 \
     g++ \
-    npm
+    npm \
+    caddy
+
+ENV NODE_ENV=production
 
 COPY rootfs /
 
@@ -44,6 +50,7 @@ RUN npm ci --only=production
 
 RUN apk del make python3 g++
 
-EXPOSE 80
+EXPOSE 443
+EXPOSE 8081
 
 #CMD ["node", "index.js"]
