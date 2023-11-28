@@ -12,11 +12,10 @@ arch:
   - i386
 init: false
 map:
-  - media:rw
+  - media:ro
   - ssl:ro
   - config:rw
 ports:
-  8081/tcp: 13379
   443/tcp: 13378
 environment:
   METADATA_PATH: /data/abs-metadata
