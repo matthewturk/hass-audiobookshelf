@@ -1,0 +1,4 @@
+:443 {
+    tls /ssl/fullchain.pem /ssl/privkey.pem
+    reverse_proxy 127.0.0.1:8081
+}

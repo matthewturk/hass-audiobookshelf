@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Audiobookshelf
-version: "2.5.0-9"
+version: "2.5.0-11"
 slug: audiobookshelf
 description: Running an audiobookshelf server
 url: "https://github.com/matthewturk/hass-audiobookshelf/tree/main/audiobookshelf"
